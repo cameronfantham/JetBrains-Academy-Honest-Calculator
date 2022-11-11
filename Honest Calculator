@@ -1,0 +1,95 @@
+msg_ = [0] * 13
+msg_[0] = "Enter an equation"
+msg_[1] = "Do you even know what numbers are? Stay focused!"
+msg_[2] = "Yes ... an interesting math operation. You've slept through all classes, haven't you?"
+msg_[3] = "Yeah... division by zero. Smart move..."
+msg_[4] = "Do you want to store the result? (y / n):"
+msg_[5] = "Do you want to continue calculations? (y / n):"
+msg_[6] = " ... lazy"
+msg_[7] = " ... very lazy"
+msg_[8] = " ... very, very lazy"
+msg_[9] = "You are"
+msg_[10] = "Are you sure? It is only one digit! (y / n)"
+msg_[11] = "Don't be silly! It's just one number! Add to the memory? (y / n)"
+msg_[12] = "Last chance! Do you really want to embarrass yourself? (y / n)"
+memory = 0
+
+def is_one_digit(v):
+    if float(v).is_integer() == True and float(v) > -10 and float(v) < 10:
+        return True
+    return False
+
+def check(v1, v2, v3):
+    msg = ""
+    if is_one_digit(v1) == True and is_one_digit(v2) == True:
+        msg = msg + msg_[6]
+    if (v1 == "1" or v2 == "1" or v1 == 1 or v2 == 1) and v3 == "*":
+        msg = msg + msg_[7]
+    if (v1 == "0" or v2 == "0" or v1 == 0 or v2 == 0) and (v3 in ["*", "+", "-"]):
+        msg = msg + msg_[8]
+    if msg != "":
+        msg = msg_[9] + msg
+    print(msg)
+
+while True:
+    x, oper, y = input(msg_[0]).split()
+    try:
+        if x == "M":
+            x = memory
+        if y == "M":
+            y = memory
+        if oper not in ["+", "-", "*", "/"]:
+            print(msg_[2])
+        float(x), float(y)
+        check(x, y, oper)
+        if oper == "+":
+            result = float(x) + float(y)                    
+        elif oper == "-":
+            result = float(x) - float(y)
+        elif oper == "*":
+            result = float(x) * float(y)
+        else:
+            result = float(x) / float(y)
+        print(result)
+        while True:
+            answer = input(msg_[4])
+            if answer == "y":
+                if is_one_digit(result) == False:
+                    memory = result
+                else:
+                    msg_index = 10
+                    while msg_index < 13:
+                        answer = input(msg_[msg_index])
+                        if answer == "y":
+                            msg_index += 1
+                        elif answer == "n":
+                            break
+                        else:
+                            continue
+                    if msg_index == 13:
+                        memory = result
+                while True:
+                    answer = input(msg_[5])
+                    if answer == "y" or answer == "n":
+                        break
+                    else:
+                        continue
+                if answer == "y" or answer == "n":
+                        break
+            if answer == "n":
+                while True:
+                    answer = input(msg_[5])
+                    if answer == "y" or answer == "n":
+                        break
+                    else:
+                        continue
+                if answer == "y" or answer == "n":
+                    break
+        if answer == "y":
+            continue
+        if answer == "n":
+            break
+    except ZeroDivisionError:
+        print(msg_[3])
+    except ValueError:
+        print(msg_[1])
